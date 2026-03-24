@@ -62,8 +62,8 @@ export default function Home({ userId, completions, friendCompletions, toggleCom
               {currentWeekNum === 6 ? 'Race Week!' : 'Training'}
             </h1>
           </div>
-          <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm flex-shrink-0">
-            <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+          <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border-2 border-white shadow-sm ${user.avatarBg}`}>
+            <span className="text-white font-bold text-xs tracking-wide">{user.initials}</span>
           </div>
         </div>
       </header>

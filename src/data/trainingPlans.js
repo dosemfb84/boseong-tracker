@@ -6,17 +6,15 @@ export const USERS = {
     id: 'andrew',
     name: 'Andrew',
     unit: 'km',
-    // Bald white guy, full beard
-    avatar: 'https://api.dicebear.com/7.x/open-peeps/svg?seed=andrew&head=shaved1&facialHair=full&skinColor=f5d3b3&backgroundColor=fed7aa',
-    avatarBg: 'bg-orange-100',
+    initials: 'AB',
+    avatarBg: 'bg-orange-500',
   },
   jimmy: {
     id: 'jimmy',
     name: 'Jimmy',
     unit: 'mi',
-    // Bald, stubble, sunglasses
-    avatar: 'https://api.dicebear.com/7.x/open-peeps/svg?seed=jimmy&head=noHair2&facialHair=moustache9&accessories=sunglasses&accessoriesProbability=100&skinColor=f5d3b3&backgroundColor=bfdbfe',
-    avatarBg: 'bg-blue-100',
+    initials: 'JH',
+    avatarBg: 'bg-blue-500',
   },
 }
 

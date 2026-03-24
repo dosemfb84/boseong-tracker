@@ -28,8 +28,8 @@ function UserSelect() {
             onClick={() => setUser(user.id)}
             className="w-full bg-white rounded-[28px] p-5 border border-gray-100 shadow-[0_2px_10px_rgba(0,0,0,0.04)] flex items-center space-x-4 hover:border-orange-200 hover:shadow-orange-100/60 active:scale-[0.98] transition-all"
           >
-            <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-100 flex-shrink-0">
-              <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+            <div className={`w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0 ${user.avatarBg}`}>
+              <span className="text-white font-bold text-lg tracking-wide">{user.initials}</span>
             </div>
             <div className="text-left">
               <h2 className="text-[20px] font-bold text-black">{user.name}</h2>

@@ -34,8 +34,8 @@ export default function Profile({ userId, completions }) {
       <main className="px-5 pt-6 space-y-5">
         {/* User card */}
         <div className="bg-white rounded-[28px] p-6 border border-gray-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] flex items-center space-x-5">
-          <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-orange-100 shadow-md flex-shrink-0">
-            <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+          <div className={`w-20 h-20 rounded-full flex items-center justify-center border-4 border-orange-100 shadow-md flex-shrink-0 ${user.avatarBg}`}>
+            <span className="text-white font-bold text-2xl tracking-wide">{user.initials}</span>
           </div>
           <div>
             <h2 className="text-[24px] font-bold text-black">{user.name}</h2>
