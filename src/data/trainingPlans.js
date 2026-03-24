@@ -14,8 +14,8 @@ export const USERS = {
     id: 'jimmy',
     name: 'Jimmy',
     unit: 'mi',
-    // Bald, stubble
-    avatar: 'https://api.dicebear.com/7.x/open-peeps/svg?seed=jimmy&head=noHair2&facialHair=moustache9&backgroundColor=bfdbfe',
+    // Bald, stubble, sunglasses
+    avatar: 'https://api.dicebear.com/7.x/open-peeps/svg?seed=jimmy&head=noHair2&facialHair=moustache9&accessories=sunglasses&accessoriesProbability=100&skinColor=f5d3b3&backgroundColor=bfdbfe',
     avatarBg: 'bg-blue-100',
   },
 }
