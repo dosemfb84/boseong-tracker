@@ -8,6 +8,7 @@ export default function Profile({ userId, completions }) {
   const [copied, setCopied] = useState(false)
 
   const completedRuns = allRuns.filter(r => completions.has(r.key) && r.type !== 'rest')
+  const totalRunnableRuns = allRuns.filter(r => r.type !== 'rest').length
   const totalVolume = completedRuns.reduce((sum, r) => sum + r.distanceNum, 0)
   const totalPlanVolume = allRuns.filter(r => r.type !== 'rest' && r.type !== 'race').reduce((sum, r) => sum + r.distanceNum, 0)
   const overallPct = totalPlanVolume > 0 ? Math.min((totalVolume / totalPlanVolume) * 100, 100) : 0
@@ -53,7 +54,7 @@ export default function Profile({ userId, completions }) {
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3">
           <div className="bg-white rounded-[24px] p-4 border border-gray-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] text-center">
-            <p className="text-2xl font-bold text-black">{completedRuns.length}</p>
+            <p className="text-2xl font-bold text-black">{completedRuns.length}<span className="text-sm font-medium text-gray-400"> / {totalRunnableRuns}</span></p>
             <p className="text-[11px] text-gray-500 font-medium mt-1 uppercase tracking-wide">Runs Done</p>
           </div>
           <div className="bg-white rounded-[24px] p-4 border border-gray-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] text-center">
