@@ -1,4 +1,4 @@
-import { Wind, Zap, Flame, Coffee, Trophy, ChevronRight, TrendingUp, TrendingDown, CheckCircle2, Circle } from 'lucide-react'
+import { Wind, Zap, Flame, Coffee, Trophy, ChevronRight, TrendingUp, TrendingDown, CheckCircle2, Circle, Check } from 'lucide-react'
 import CircularProgress from '../components/CircularProgress'
 import { PLANS, USERS, TYPE_CONFIG, getAllRuns, getCurrentWeekNum, friendlyDate } from '../data/trainingPlans'
 
@@ -96,9 +96,10 @@ export default function Home({ userId, completions, friendCompletions, toggleCom
                   </div>
                   <button
                     onClick={() => toggleComplete(nextRun.key)}
-                    className="bg-orange-500 hover:bg-orange-400 active:scale-95 transition-all text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg shadow-orange-500/30"
+                    className="flex items-center space-x-2 bg-white hover:bg-gray-100 active:scale-95 transition-all text-zinc-900 rounded-full px-5 h-11 shadow-lg font-semibold text-sm"
                   >
-                    <CheckCircle2 size={22} />
+                    <Circle size={15} className="text-gray-400" />
+                    <span>Mark done</span>
                   </button>
                 </div>
               </div>
