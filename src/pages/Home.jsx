@@ -14,13 +14,13 @@ function RunIcon({ type, size = 22 }) {
   )
 }
 
-export default function Home({ userId, completions, friendCompletions, toggleComplete, setActiveTab }) {
+export default function Home({ userId, completions, friendCompletions, toggleComplete, setActiveTab, workoutEdits = {} }) {
   const user = USERS[userId]
   const friendId = userId === 'andrew' ? 'jimmy' : 'andrew'
   const friend = USERS[friendId]
   const currentWeekNum = getCurrentWeekNum()
   const weekData = PLANS[userId][currentWeekNum - 1]
-  const allRuns = getAllRuns(userId)
+  const allRuns = getAllRuns(userId).map(r => ({ ...r, ...(workoutEdits[r.key] || {}) }))
 
   // Next uncompleted run
   const nextRun = allRuns.find(r => r.type !== 'rest' && !completions.has(r.key))

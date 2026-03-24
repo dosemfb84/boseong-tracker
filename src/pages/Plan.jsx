@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Wind, Zap, Flame, Coffee, Trophy, CheckCircle2, Circle, ChevronDown, ChevronUp } from 'lucide-react'
+import { Wind, Zap, Flame, Coffee, Trophy, CheckCircle2, Circle, ChevronDown, ChevronUp, Pencil, X, Check } from 'lucide-react'
 import { PLANS, USERS, TYPE_CONFIG, getCurrentWeekNum } from '../data/trainingPlans'
 
 const ICON_MAP = { Wind, Zap, Flame, Coffee, Trophy }
@@ -14,12 +14,70 @@ function RunIcon({ type }) {
   )
 }
 
-function RunRow({ run, unit, completed, onToggle }) {
+function EditForm({ run, unit, onSave, onCancel }) {
+  const [description, setDescription] = useState(run.description)
+  const [distanceNum, setDistanceNum] = useState(run.distanceNum)
+
+  function handleSave() {
+    const trimmed = description.trim()
+    if (!trimmed) return
+    onSave({ description: trimmed, distanceNum: Number(distanceNum) })
+  }
+
+  return (
+    <div className="mt-3 space-y-2">
+      <textarea
+        className="w-full text-[14px] text-gray-700 border border-gray-200 rounded-xl p-3 resize-none focus:outline-none focus:border-orange-400"
+        rows={3}
+        value={description}
+        onChange={e => setDescription(e.target.value)}
+      />
+      {run.distanceNum > 0 && (
+        <div className="flex items-center space-x-2">
+          <span className="text-[13px] text-gray-500">Distance</span>
+          <input
+            type="number"
+            min="0"
+            step="0.1"
+            className="w-24 text-[14px] text-gray-700 border border-gray-200 rounded-xl px-3 py-1.5 focus:outline-none focus:border-orange-400"
+            value={distanceNum}
+            onChange={e => setDistanceNum(e.target.value)}
+          />
+          <span className="text-[13px] text-gray-500">{unit}</span>
+        </div>
+      )}
+      <div className="flex space-x-2 pt-1">
+        <button
+          onClick={handleSave}
+          className="flex items-center space-x-1 bg-orange-500 text-white text-[13px] font-semibold px-4 py-1.5 rounded-full"
+        >
+          <Check size={14} />
+          <span>Save</span>
+        </button>
+        <button
+          onClick={onCancel}
+          className="flex items-center space-x-1 bg-gray-100 text-gray-600 text-[13px] font-semibold px-4 py-1.5 rounded-full"
+        >
+          <X size={14} />
+          <span>Cancel</span>
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function RunRow({ run, unit, completed, onToggle, isEdited, onSaveEdit, onClearEdit }) {
   const [expanded, setExpanded] = useState(false)
+  const [editing, setEditing] = useState(false)
   const isRest = run.type === 'rest'
   const isRace = run.type === 'race'
-  const truncated = run.description.length > 55
+  const truncated = !editing && run.description.length > 55
   const displayDesc = expanded || !truncated ? run.description : run.description.slice(0, 55) + '…'
+
+  function handleSave(fields) {
+    onSaveEdit(run.key, fields)
+    setEditing(false)
+  }
 
   return (
     <div className={`rounded-[20px] p-4 mb-2 border transition-all ${
@@ -29,26 +87,60 @@ function RunRow({ run, unit, completed, onToggle }) {
         <RunIcon type={run.type} />
         <div className="flex-1 min-w-0">
           <div className="flex justify-between items-start mb-0.5">
-            <div>
+            <div className="flex items-center space-x-2">
               <span className={`text-[13px] font-semibold uppercase tracking-wider ${TYPE_CONFIG[run.type].colorClass}`}>
                 {run.day}
               </span>
-              <span className="text-[12px] text-gray-400 ml-2">{run.date}</span>
+              <span className="text-[12px] text-gray-400">{run.date}</span>
+              {isEdited && !editing && (
+                <span className="text-[11px] font-semibold text-orange-400 uppercase tracking-wide">edited</span>
+              )}
             </div>
             <span className={`text-[15px] font-bold ml-2 flex-shrink-0 ${completed ? 'text-gray-400' : 'text-black'}`}>
               {run.distanceNum > 0 ? `${run.distanceNum} ${unit}` : '—'}
             </span>
           </div>
-          <p className={`text-[14px] leading-relaxed ${completed ? 'text-gray-400 line-through' : isRest ? 'text-gray-400' : 'text-gray-700'}`}>
-            {displayDesc}
-          </p>
-          {truncated && (
-            <button
-              onClick={() => setExpanded(e => !e)}
-              className="flex items-center text-orange-500 text-[12px] font-medium mt-1"
-            >
-              {expanded ? <><ChevronUp size={14} /> Show less</> : <><ChevronDown size={14} /> Show more</>}
-            </button>
+
+          {editing ? (
+            <EditForm
+              run={run}
+              unit={unit}
+              onSave={handleSave}
+              onCancel={() => setEditing(false)}
+            />
+          ) : (
+            <>
+              <p className={`text-[14px] leading-relaxed ${completed ? 'text-gray-400 line-through' : isRest ? 'text-gray-400' : 'text-gray-700'}`}>
+                {displayDesc}
+              </p>
+              {truncated && (
+                <button
+                  onClick={() => setExpanded(e => !e)}
+                  className="flex items-center text-orange-500 text-[12px] font-medium mt-1"
+                >
+                  {expanded ? <><ChevronUp size={14} /> Show less</> : <><ChevronDown size={14} /> Show more</>}
+                </button>
+              )}
+              {!isRest && !isRace && (
+                <div className="flex items-center space-x-3 mt-2">
+                  <button
+                    onClick={() => setEditing(true)}
+                    className="flex items-center space-x-1 text-[12px] text-gray-400 hover:text-orange-500 transition-colors"
+                  >
+                    <Pencil size={12} />
+                    <span>Edit</span>
+                  </button>
+                  {isEdited && (
+                    <button
+                      onClick={() => onClearEdit(run.key)}
+                      className="text-[12px] text-gray-400 hover:text-red-400 transition-colors"
+                    >
+                      Reset
+                    </button>
+                  )}
+                </div>
+              )}
+            </>
           )}
         </div>
         {!isRest && (
@@ -64,14 +156,20 @@ function RunRow({ run, unit, completed, onToggle }) {
   )
 }
 
-export default function Plan({ userId, completions, toggleComplete }) {
+export default function Plan({ userId, completions, toggleComplete, workoutEdits = {}, saveWorkoutEdit, clearWorkoutEdit }) {
   const currentWeekNum = getCurrentWeekNum()
   const [selectedWeek, setSelectedWeek] = useState(currentWeekNum)
   const user = USERS[userId]
   const weekData = PLANS[userId][selectedWeek - 1]
 
-  const completedInWeek = weekData.runs.filter(r => completions.has(r.key) && r.type !== 'rest').length
-  const runnableRuns = weekData.runs.filter(r => r.type !== 'rest').length
+  // Apply any saved edits on top of base run data
+  const runs = weekData.runs.map(r => ({
+    ...r,
+    ...(workoutEdits[r.key] || {}),
+  }))
+
+  const completedInWeek = runs.filter(r => completions.has(r.key) && r.type !== 'rest').length
+  const runnableRuns = runs.filter(r => r.type !== 'rest').length
 
   return (
     <div className="min-h-screen bg-[#F2F2F7] pb-28">
@@ -113,13 +211,16 @@ export default function Plan({ userId, completions, toggleComplete }) {
 
         {/* Run list */}
         <div>
-          {weekData.runs.map(r => (
+          {runs.map(r => (
             <RunRow
               key={r.key}
               run={r}
               unit={user.unit}
               completed={completions.has(r.key)}
               onToggle={toggleComplete}
+              isEdited={!!workoutEdits[r.key]}
+              onSaveEdit={saveWorkoutEdit}
+              onClearEdit={clearWorkoutEdit}
             />
           ))}
         </div>

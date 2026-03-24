@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { USERS } from './data/trainingPlans'
 import { useCompletions } from './hooks/useCompletions'
+import { useWorkoutEdits } from './hooks/useWorkoutEdits'
 import BottomNav from './components/BottomNav'
 import Home from './pages/Home'
 import Plan from './pages/Plan'
@@ -60,6 +61,7 @@ export default function App() {
 
   const [activeTab, setActiveTab] = useState('home')
   const { completions, friendCompletions, toggleComplete, loading } = useCompletions(userId, friendId)
+  const { workoutEdits, saveWorkoutEdit, clearWorkoutEdit } = useWorkoutEdits(userId)
 
   if (!userId) return <UserSelect />
   if (loading) return <LoadingScreen />
@@ -73,6 +75,7 @@ export default function App() {
           friendCompletions={friendCompletions}
           toggleComplete={toggleComplete}
           setActiveTab={setActiveTab}
+          workoutEdits={workoutEdits}
         />
       )}
       {activeTab === 'plan' && (
@@ -80,6 +83,9 @@ export default function App() {
           userId={userId}
           completions={completions}
           toggleComplete={toggleComplete}
+          workoutEdits={workoutEdits}
+          saveWorkoutEdit={saveWorkoutEdit}
+          clearWorkoutEdit={clearWorkoutEdit}
         />
       )}
       {activeTab === 'activity' && (
