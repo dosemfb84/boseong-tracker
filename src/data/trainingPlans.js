@@ -56,9 +56,9 @@ function run(userId, week, dayAbbrev, isoDate, day, type, description, distanceN
 
 export const ANDREW_PLAN = [
   // Week 1
-  { weekNum: 1, weekLabel: 'March 23 – 29', total: 113, unit: 'km', runs: [
-    run('andrew',1,'mon','2026-03-23','Monday',   'workout', '3KM UP / 15×400M @ 3:30/KM + 5 Hill Repeats / 3KM CD', 14),
-    run('andrew',1,'tue','2026-03-24','Tuesday',  'easy',    'Easy 15km', 15),
+  { weekNum: 1, weekLabel: 'March 23 – 29', total: 110, unit: 'km', runs: [
+    run('andrew',1,'mon','2026-03-23','Monday',   'easy',    'Easy run + 5 Hill Repeats', 12),
+    run('andrew',1,'tue','2026-03-24','Tuesday',  'workout', '3KM UP / 15×400M @ 3:30/KM / 3KM CD', 14),
     run('andrew',1,'wed','2026-03-25','Wednesday','easy',    'Easy 15km', 15),
     run('andrew',1,'thu','2026-03-26','Thursday', 'easy',    'Easy 15km', 15),
     run('andrew',1,'fri','2026-03-27','Friday',   'workout', '3KM UP / 9KM Steady @ 4:15/KM / 3KM CD', 15),
@@ -76,9 +76,9 @@ export const ANDREW_PLAN = [
     run('andrew',2,'sun','2026-04-05','Sunday',   'easy',    'Easy 15km', 15),
   ]},
   // Week 3
-  { weekNum: 3, weekLabel: 'April 6 – 12', total: 122, unit: 'km', runs: [
-    run('andrew',3,'mon','2026-04-06','Monday',   'workout', '3KM UP / 15×400M @ 3:30/KM + 5 Hill Repeats / 3KM CD', 14),
-    run('andrew',3,'tue','2026-04-07','Tuesday',  'easy',    'Easy 15km', 15),
+  { weekNum: 3, weekLabel: 'April 6 – 12', total: 119, unit: 'km', runs: [
+    run('andrew',3,'mon','2026-04-06','Monday',   'easy',    'Easy run + 5 Hill Repeats', 12),
+    run('andrew',3,'tue','2026-04-07','Tuesday',  'workout', '3KM UP / 15×400M @ 3:30/KM / 3KM CD', 14),
     run('andrew',3,'wed','2026-04-08','Wednesday','easy',    'Easy 15km', 15),
     run('andrew',3,'thu','2026-04-09','Thursday', 'easy',    'Easy 15km', 15),
     run('andrew',3,'fri','2026-04-10','Friday',   'workout', '3KM UP / 3×3KM @ 4:05/KM (1\' rest) / 3KM CD', 15),
