@@ -71,7 +71,7 @@ export const ANDREW_PLAN = [
     run('andrew',2,'tue','2026-03-31','Tuesday',  'workout', '3KM UP / 1×10KM @ 3:40–3:50/KM / 3KM CD', 16),
     run('andrew',2,'wed','2026-04-01','Wednesday','easy',    'Easy 15km', 15),
     run('andrew',2,'thu','2026-04-02','Thursday', 'easy',    'Easy 15km', 15),
-    run('andrew',2,'fri','2026-04-03','Friday',   'workout', '3KM UP / 9KM Progressive (4:20→3:55/KM) / 3KM CD', 15),
+    run('andrew',2,'fri','2026-04-03','Friday',   'easy',    'Easy 15km', 15),
     run('andrew',2,'sat','2026-04-04','Saturday', 'long',    'Long Run: 10KM Easy + 10KM @ 3:55/KM + 10KM Easy', 30),
     run('andrew',2,'sun','2026-04-05','Sunday',   'easy',    'Easy 15km', 15),
   ]},

@@ -66,9 +66,10 @@ function EditForm({ run, unit, onSave, onCancel }) {
   )
 }
 
-function RunRow({ run, unit, completed, onToggle, isEdited, onSaveEdit, onClearEdit }) {
+function RunRow({ run, unit, completed, onToggle, isEdited, onSaveEdit, onClearEdit, onDeleteRun }) {
   const [expanded, setExpanded] = useState(false)
   const [editing, setEditing] = useState(false)
+  const [confirmDelete, setConfirmDelete] = useState(false)
   const isRest = run.type === 'rest'
   const isRace = run.type === 'race'
   const truncated = !editing && run.description.length > 55
@@ -77,6 +78,14 @@ function RunRow({ run, unit, completed, onToggle, isEdited, onSaveEdit, onClearE
   function handleSave(fields) {
     onSaveEdit(run.key, fields)
     setEditing(false)
+  }
+
+  function handleDelete() {
+    if (confirmDelete) {
+      onDeleteRun(run.key)
+    } else {
+      setConfirmDelete(true)
+    }
   }
 
   return (
@@ -124,7 +133,7 @@ function RunRow({ run, unit, completed, onToggle, isEdited, onSaveEdit, onClearE
               {!isRest && !isRace && (
                 <div className="flex items-center space-x-3 mt-2">
                   <button
-                    onClick={() => setEditing(true)}
+                    onClick={() => { setEditing(true); setConfirmDelete(false) }}
                     className="flex items-center space-x-1 text-[12px] text-gray-400 hover:text-orange-500 transition-colors"
                   >
                     <Pencil size={12} />
@@ -133,9 +142,32 @@ function RunRow({ run, unit, completed, onToggle, isEdited, onSaveEdit, onClearE
                   {isEdited && (
                     <button
                       onClick={() => onClearEdit(run.key)}
-                      className="text-[12px] text-gray-400 hover:text-red-400 transition-colors"
+                      className="text-[12px] text-gray-400 hover:text-orange-400 transition-colors"
                     >
                       Reset
+                    </button>
+                  )}
+                  {confirmDelete ? (
+                    <>
+                      <button
+                        onClick={handleDelete}
+                        className="text-[12px] font-semibold text-red-500 hover:text-red-600 transition-colors"
+                      >
+                        Confirm delete
+                      </button>
+                      <button
+                        onClick={() => setConfirmDelete(false)}
+                        className="text-[12px] text-gray-400 hover:text-gray-600 transition-colors"
+                      >
+                        Cancel
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={handleDelete}
+                      className="text-[12px] text-gray-400 hover:text-red-400 transition-colors"
+                    >
+                      Delete
                     </button>
                   )}
                 </div>
@@ -163,13 +195,19 @@ export default function Plan({ userId, completions, toggleComplete, workoutEdits
   const weekData = PLANS[userId][selectedWeek - 1]
 
   // Apply any saved edits on top of base run data
-  const runs = weekData.runs.map(r => ({
+  const allRuns = weekData.runs.map(r => ({
     ...r,
     ...(workoutEdits[r.key] || {}),
   }))
+  const runs = allRuns.filter(r => !r.deleted)
 
+  const weekTotal = runs.reduce((sum, r) => sum + (r.distanceNum || 0), 0)
   const completedInWeek = runs.filter(r => completions.has(r.key) && r.type !== 'rest').length
   const runnableRuns = runs.filter(r => r.type !== 'rest').length
+
+  function handleDeleteRun(key) {
+    saveWorkoutEdit(key, { deleted: true })
+  }
 
   return (
     <div className="min-h-screen bg-[#F2F2F7] pb-28">
@@ -205,7 +243,7 @@ export default function Plan({ userId, completions, toggleComplete, workoutEdits
         <div className="mb-5">
           <h2 className="text-[18px] font-bold text-black">{weekData.weekLabel}</h2>
           <p className="text-[14px] text-gray-500 mt-0.5">
-            {weekData.total} {user.unit} total · {completedInWeek} of {runnableRuns} runs done
+            {weekTotal} {user.unit} total · {completedInWeek} of {runnableRuns} runs done
           </p>
         </div>
 
@@ -221,6 +259,7 @@ export default function Plan({ userId, completions, toggleComplete, workoutEdits
               isEdited={!!workoutEdits[r.key]}
               onSaveEdit={saveWorkoutEdit}
               onClearEdit={clearWorkoutEdit}
+              onDeleteRun={handleDeleteRun}
             />
           ))}
         </div>
